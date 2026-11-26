@@ -301,6 +301,11 @@ class BrokerData:
             # top-level volume is the day's traded volume; ohlc.volume is only the candle's
             "volume": int(quote.get("volume", 0)) if quote.get("volume") else 0,
             "oi": int(quote.get("oi", 0)) if quote.get("oi") else 0,
+            # The day's price band and VWAP, as the full quote states them. 0 when Upstox
+            # does not send one, so a client gating entries on them can refuse.
+            "lower_circuit_limit": float(quote.get("lower_circuit_limit") or 0),
+            "upper_circuit_limit": float(quote.get("upper_circuit_limit") or 0),
+            "average_price": float(quote.get("average_price") or 0),
         }
 
     def _get_indicator_ltp(self, instrument_key: str) -> dict:
